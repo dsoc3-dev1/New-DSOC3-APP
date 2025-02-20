@@ -1,0 +1,189 @@
+## pom.xml Configuration:
+
+<!-- Root element of the POM file -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!-- Version of the POM model being used -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Group ID of the project, typically the reverse domain name of the organization -->
+    <groupId>club.dsoc3</groupId>
+
+    <!-- Artifact ID, the name of the project or module -->
+    <artifactId>dsoc3-webapp</artifactId>
+
+    <!-- Packaging type, specifying the type of project being built. In this case, a web application (WAR file) -->
+    <packaging>war</packaging>
+
+    <!-- Version of the project. SNAPSHOT indicates a development version -->
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- Name of the project -->
+    <name>dsoc3-webapp Maven Webapp</name>
+
+    <!-- URL to the project's website or information page -->
+    <url>http://maven.apache.org</url>
+
+    <!-- Dependencies section, listing external libraries and frameworks required by the project -->
+    <dependencies>
+        <!-- JUnit Jupiter API dependency for writing unit tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit Jupiter Engine dependency for executing unit tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Servlet API dependency, required for developing servlets -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Build section, configuring how the project should be built -->
+    <build>
+        <!-- Final name of the built artifact (WAR file) -->
+        <finalName>dsoc3-webapp</finalName>
+
+        <!-- Plugins section, specifying Maven plugins used during the build process -->
+        <plugins>
+            <!-- Maven Compiler Plugin, used to compile Java sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <!-- Source code compatibility version -->
+                    <source>1.8</source>
+                    <!-- Target JVM version -->
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Surefire Plugin, used to run unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <!-- Include pattern for test classes -->
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+
+
+###WelcomeServlet.java
+package club.dsoc3; // Defines the package for this class
+
+import java.io.IOException; // Import IOException for handling input/output exceptions
+import javax.servlet.ServletException; // Import ServletException for handling servlet-related exceptions
+import javax.servlet.annotation.WebServlet; // Import WebServlet annotation for servlet configuration
+import javax.servlet.http.HttpServlet; // Import HttpServlet as the base class for the servlet
+import javax.servlet.http.HttpServletRequest; // Import HttpServletRequest for handling HTTP requests
+import javax.servlet.http.HttpServletResponse; // Import HttpServletResponse for handling HTTP responses
+
+@WebServlet("/welcome") // Define the URL pattern for this servlet
+public class WelcomeServlet extends HttpServlet { // Extend HttpServlet to create a servlet
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html"); // Set the content type of the response to HTML
+        response.getWriter().println("Welcome to DevSecOps Club!!!"); // Write "Welcome to DevSecOps Club!!!" to the response
+    }
+}
+
+
+###web.xml Configuration:
+<web-app>
+    <!-- Define a servlet -->
+    <servlet>
+        <servlet-name>WelcomeServlet</servlet-name> <!-- Name of the servlet -->
+        <servlet-class>club.dsoc3.WelcomeServlet</servlet-class> <!-- Fully qualified class name of the servlet -->
+    </servlet>
+    <!-- Define a servlet mapping -->
+    <servlet-mapping>
+        <servlet-name>WelcomeServlet</servlet-name> <!-- Name of the servlet to be mapped -->
+        <url-pattern>/welcome</url-pattern> <!-- URL pattern to map to the servlet -->
+    </servlet-mapping>
+</web-app>
+
+####index.jsp
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title> <!-- Title of the HTML page -->
+</head>
+<body>
+    <h1>Welcome to DevSecOps Club!!!</h1> <!-- Heading with the welcome message -->
+</body>
+</html>
+
+###### DSOC3WebAppTest.java
+package club.dsoc3; // Defines the package for this class
+
+import org.junit.jupiter.api.Test; // Import JUnit 5 Test annotation
+import static org.junit.jupiter.api.Assertions.*; // Import static methods for assertions
+
+public class DSOC3WebAppTest {
+    
+    @Test
+    public void testWelcomeMessage() {
+        // A simple test case
+        assertTrue(true); 
+    }
+
+    @Test
+    public void testStringEquality() {
+        // Test case to check if the welcome message is correct
+        String expectedMessage = "Welcome to DevSecOps Club!!!";
+        String actualMessage = "Welcome to DevSecOps Club!!!"; // This should come from your application logic
+        assertEquals(expectedMessage, actualMessage, "The welcome message should be 'Welcome to DevSecOps Club!!!'");
+    }
+
+    @Test
+    public void testNotNull() {
+        // Test case to check if an object is not null
+        Object obj = new Object();
+        assertNotNull(obj, "The object should not be null");
+    }
+
+    @Test
+    public void testArrayEquality() {
+        // Test case to check if arrays are equal
+        int[] expectedArray = {1, 2, 3, 4, 5};
+        int[] actualArray = {1, 2, 3, 4, 5};
+        assertArrayEquals(expectedArray, actualArray, "The arrays should be equal");
+    }
+
+    @Test
+    public void testBooleanCondition() {
+        // Test case to check a boolean condition
+        boolean isActive = true;
+        assertTrue(isActive, "The isActive flag should be true");
+    }
+
+    @Test
+    public void testException() {
+        // Test case to check if an exception is thrown
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            throw new IllegalArgumentException("Invalid argument");
+        });
+        assertEquals("Invalid argument", exception.getMessage());
+    }
+}
